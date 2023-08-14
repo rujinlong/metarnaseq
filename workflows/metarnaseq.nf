@@ -47,7 +47,9 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 // MODULE: Installed directly from nf-core/modules
 //
 include { FASTQC                      } from '../modules/nf-core/fastqc/main'
+include { FASTP                       } from '../modules/nf-core/modules/fastp/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
+include { HUMANN                      } from '../modules/local/humann'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
 /*
@@ -81,6 +83,15 @@ workflow METARNASEQ {
         INPUT_CHECK.out.reads
     )
     ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+
+    FASTP (
+        INPUT_CHECK.out.reads, false, false
+    )
+    ch_versions = ch_versions.mix(FASTP.out.versions.first())
+
+    ch_clean_reads = FASTP.out.reads
+
+    HUMANN (FASTP.out.reads)
 
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')

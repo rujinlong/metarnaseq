@@ -1,18 +1,21 @@
 process HUMANN {
+    tag "$meta.id"
     label "metarnaseq_humann"
 
     input:
-    tuple val(sampleID), file(reads1), file(reads2)
+    tuple val(meta), path(reads)
 
     output:
-    path("annoHumann_${sampleID}")
+    path "annoHumann_*"
 
     when:
     task.ext.when == null || task.ext.when
 
+    script:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    zcat $reads1 $reads2 | gzip > ${sampleID}.fq.gz
-    humann --input ${sampleID}.fq.gz --output annoHumann_${sampleID} --threads $task.cpus --memory-use 'maximum' --nucleotide-database ${params.db_biobakery}/humann3/chocophlan --protein-database ${params.db_biobakery}/humann3/uniref --metaphlan-options "--bowtie2db ${params.db_biobakery}/metaphlan"
-    rm -rf ${sampleID}.fq.gz
+    zcat ${reads[0]} ${reads[1]} | gzip > ${sampleID}.fq.gz
+    humann --input ${prefix}.fq.gz --output annoHumann_${prefix} --threads $task.cpus --memory-use 'maximum' --nucleotide-database ${params.db}/humann3/chocophlan --protein-database ${params.db}/humann3/uniref --metaphlan-options "--bowtie2db ${params.db}/metaphlan"
+    rm -rf ${prefix}.fq.gz
     """
 }
