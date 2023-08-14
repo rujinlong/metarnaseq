@@ -47,7 +47,7 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 // MODULE: Installed directly from nf-core/modules
 //
 include { FASTQC                      } from '../modules/nf-core/fastqc/main'
-include { FASTP                       } from '../modules/nf-core/modules/fastp/main'
+include { FASTP                       } from '../modules/nf-core/fastp/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { HUMANN                      } from '../modules/local/humann'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
