@@ -10,10 +10,10 @@ ARG MAMBA_DOCKERFILE_ACTIVATE=1
 ENV PATH=/opt/conda/bin:$PATH
 
 # Copy conda env files
-COPY ./docker/metarnaseq-humann/env_*.yml /tmp
+COPY ./docker/metarnaseq-humann/env.yml /tmp
 
 # Install packages
-RUN --mount=type=cache,target=/opt/conda/pkgs micromamba install -n base -f /tmp/env_abundance.yml -y
+RUN --mount=type=cache,target=/opt/conda/pkgs micromamba install -n base -f /tmp/env.yml -y
 
 # clean
 RUN micromamba clean --all --yes
