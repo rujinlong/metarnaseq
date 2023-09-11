@@ -14,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./docker/metarnaseq-humann/Dockerfile
-            image: jinlongru/metarnaseq-humann
+          # - dockerfile: ./docker/metarnaseq-humann/Dockerfile
+          #   image: jinlongru/metarnaseq-humann
     permissions:
       contents: read
       packages: write
